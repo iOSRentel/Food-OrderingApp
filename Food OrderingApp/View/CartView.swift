@@ -6,6 +6,7 @@
 // 4%55
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct CartView: View {
     @ObservedObject var homeData: HomeViewModel
@@ -36,13 +37,79 @@ struct CartView: View {
                 
             LazyVStack(spacing:0) {
         
-                ForEach(homeData.cartItems) {item in
+                ForEach(homeData.cartItems) {cart in
+//MARK: - дизайн корзины
+                HStack(spacing: 15) {
+                    WebImage(url: URL(string: cart.item.item_image))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 130, height: 130)
+                        .cornerRadius(15)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(cart.item.item_name)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                    Text(cart.item.item_details)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.gray)
+                        .lineLimit(2)
+                    
+                HStack(spacing: 15) {
+                    Text(homeData.getPrice(value: Float(truncating: cart.item.item_cost)))
+                        .font(.title2)
+                        .fontWeight(.heavy)
+                        .foregroundColor(.black)
                 
-                    Text(item.item.item_name)
+                Spacer(minLength: 0)
+                
+                    Button(action: {
+                        if cart.quantity > 1 {
+                            homeData.cartItems[homeData.getIndex(item: cart.item, isCartIndex: true)].quantity -= 1
+                        }
+                    }) {
+                    Image(systemName: "minus")
+                        .font(.system(size: 16, weight: .heavy))
+                        .foregroundColor(.black)
+                    }
+                    Text("\(cart.quantity)")
+                        .fontWeight(.heavy)
+                        .foregroundColor(.black)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(.black.opacity(0.06))
+                    
+                    Button(action: {
+                        homeData.cartItems[homeData.getIndex(item: cart.item, isCartIndex: true)].quantity += 1
+                    }) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 16, weight: .heavy))
+                        .foregroundColor(.black)
                     }
                 }
             }
-//  BottomView
+        }
+            .padding()
+//   удаление заказа
+            .contextMenu {
+                Button(action: {
+                    let index = homeData.getIndex(item: cart.item, isCartIndex: true)
+
+                    let itemIndex = homeData.getIndex(item: cart.item, isCartIndex: false)
+                    
+                    homeData.items[itemIndex].isAdded = false
+                    homeData.filtered[itemIndex].isAdded = false
+
+
+                    homeData.cartItems.remove(at: index)
+                }) {
+                    Text("Remove")
+                }
+            }
+        }
+    }
+}
+            
+//MARK: - Итоговая цена (счет)
         VStack{
             HStack{
                 Text("Total")
@@ -60,8 +127,8 @@ struct CartView: View {
                 }
                     .padding([.top, .horizontal])
                 
-            Button(action: {}) {
-                Text("Check out")
+            Button(action: homeData.updateOrder) {
+                Text(homeData.ordered ? "Cancel Order" : "Check out")
                     .font(.title2)
                     .fontWeight(.heavy)
                     .foregroundColor(.white)

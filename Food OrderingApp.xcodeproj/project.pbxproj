@@ -76,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				662B1FE027AAA2CB00CD8436 /* Food_OrderingApp.swift */,
+				662B1FE227AAA2CB00CD8436 /* ContentView.swift */,
 				662B1FEE27AAA3D700CD8436 /* ViewModel */,
 				662B1FEF27AAA3ED00CD8436 /* Model */,
 				662B1FF027AAA3F500CD8436 /* View */,
@@ -114,7 +115,6 @@
 		662B1FF027AAA3F500CD8436 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				662B1FE227AAA2CB00CD8436 /* ContentView.swift */,
 				662B1FF327AAA47300CD8436 /* Home.swift */,
 				6682612827AACBCF00233FEE /* Menu.swift */,
 				66BE590627AC2A3C00142428 /* ItemView.swift */,
@@ -340,6 +340,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Food OrderingApp/Preview Content\"";
@@ -359,6 +360,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rentel.RentelReader.Food-OrderingApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -370,6 +372,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Food OrderingApp/Preview Content\"";
@@ -389,6 +392,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.rentel.RentelReader.Food-OrderingApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

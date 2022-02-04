@@ -11,6 +11,7 @@ import CoreLocation
 //Файрбейс авторизация + Firestore
 import Firebase
 import CoreMedia
+import simd
 
 //Если использовать без геолокации оставляю только ObservableObject
 class HomeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -29,6 +30,7 @@ class HomeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
 //MARK: - Корзина
     @Published var cartItems : [Cart] = []
+    @Published var ordered = false
     
 //MARK: - Геолокация
     @Published var locationManager = CLLocationManager()
@@ -133,8 +135,14 @@ class HomeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     func addToCart(item: Item) {
 //  проверка добавлено или нет
             self.items[getIndex(item: item, isCartIndex: false)].isAdded = !item.isAdded
+        
+// смотри видео 3 (12:15)
+        let filterIndex = self.filtered.firstIndex { (item1) -> Bool in
+            return item.id == item1.id
+        } ?? 0
+        
 //  обновление строки поиска
-            self.filtered[getIndex(item: item, isCartIndex: false)].isAdded = !item.isAdded
+            self.filtered[filterIndex].isAdded = !item.isAdded
 
         
         if item.isAdded {
@@ -170,5 +178,50 @@ class HomeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         format.numberStyle = .currency
         
         return format.string(from: NSNumber(value: value)) ?? ""
+    }
+    
+//MARK: - Отправка счета корзины в Файрбейс
+    func updateOrder() {
+        let db = Firestore.firestore()
+        
+        if ordered {
+            
+            ordered = false
+            db.collection("Users").document(Auth.auth().currentUser!.uid).delete {
+                (err) in
+                if err != nil {
+                    self.ordered = true
+                }
+            }
+            
+            return
+        }
+        
+        var details : [[String: Any]] = []
+        cartItems.forEach { (cart) in
+            
+            details.append([
+                
+                "item_name": cart.item.item_name,
+                "item_quantity": cart.quantity,
+                "item_cost": cart.item.item_cost
+            ])
+        }
+        
+        ordered = true
+        
+        db.collection("Users").document(Auth.auth().currentUser!.uid).setData([
+            "ordered_food": details,
+            "total_cost": calculateTotalPrice(),
+            "location": GeoPoint(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude)
+            
+        ]) { (err) in
+            
+            if err != nil {
+                self.ordered = false
+                return
+        }
+        print("seccess")
+        }
     }
 }

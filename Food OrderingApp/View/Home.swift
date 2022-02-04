@@ -59,7 +59,19 @@ struct Home: View {
                  
 // убираем этот Спейсер на 6:55 видео номер 2
 //                 Spacer(minLength: 0)
-                                  
+            
+                 
+// смотри часть 3 (12:40)
+                 
+                 if HomeModel.items.isEmpty {
+                     Spacer()
+                     
+                     ProgressView()
+                     
+                     Spacer()
+                     
+                 } else {
+                 
 //MARK: - Иконки еды
                  ScrollView(.vertical, showsIndicators: false, content: {
                      VStack(spacing: 25) {
@@ -99,6 +111,7 @@ struct Home: View {
                      .padding(.top, 10)
                  })
              }
+        }
 //MARK: - продолжение локации
              if HomeModel.noLocation {
                  Text("Please Enable Location Access In Settings To Further Move On")
