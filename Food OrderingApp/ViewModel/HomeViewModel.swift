@@ -222,7 +222,7 @@ class HomeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 self.ordered = false
                 return
         }
-        print("seccess")
+        print("success")
         }
     }
 }
