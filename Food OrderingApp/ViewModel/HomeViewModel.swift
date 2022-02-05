@@ -4,7 +4,7 @@
 //
 //  Created by Boris Zinovyev on 02.02.2022.
 //
-
+//SwiftUI
 import SwiftUI
 // Геолокация
 import CoreLocation
